@@ -1,4 +1,19 @@
-{
+var similarity = function( /*object*/ origin, /*object*/ target, type) {
+  origin = typeof(origin) === 'string' ? JSON.parse(origin) : origin;
+  target = typeof(target) === 'string' ? JSON.parse(target) : target;
+  var distance = 0.0,
+    origin_traits = origin.tree.children[type].children[0].children,
+    target_traits = target.tree.children[type].children[0].children;
+
+  // for each trait in origin personality...
+  origin_traits.forEach(function(trait, i) {
+    distance += Math.pow(trait.percentage - target_traits[i].percentage, 2);
+  });
+  var ret = 1 - (Math.sqrt(distance / origin_traits.length));
+  return ret;
+};
+
+var melania = {
   "id": "*UNKNOWN*",
   "source": "*UNKNOWN*",
   "word_count": 1366,
@@ -428,7 +443,7 @@
   "warnings": []
 }
 
-{
+var michelle = {
   "id": "*UNKNOWN*",
   "source": "*UNKNOWN*",
   "word_count": 2161,
@@ -857,3 +872,7 @@
   },
   "warnings": []
 }
+
+console.log('Personality Similarity:', similarity(michelle, melania, 0))
+console.log('Needs Similarity:', similarity(michelle, melania, 1))
+console.log('Values Similarity:', similarity(michelle, melania, 2))

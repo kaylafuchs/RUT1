@@ -1,7 +1,8 @@
 var express  = require('express'),
   app        = express(),
   // bluemix    = require('./config/bluemix'),
-  watson     = require('watson-developer-cloud')
+  watson     = require('watson-developer-cloud'),
+  bodyParser = require('body-parser')
   // extend     = require('util')._extend;
 
 // Bootstrap application settings
@@ -20,7 +21,11 @@ var personalityInsights = watson.personality_insights({
   username: "225a4e90-13e6-417b-a6c9-a7343fda82d5",
   version: 'v2'
 })
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
+// parse application/json
+app.use(bodyParser.json())
 // render index page
 app.get('/', function(req, res) {
   res.render('index');
